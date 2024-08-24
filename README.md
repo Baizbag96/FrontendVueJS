@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # baiz-playground-project
 
 ## Project setup
@@ -22,3 +23,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# FrontendVueJS
+>>>>>>> 716ffacf76897308cb8fb166656219c6208ab56a
