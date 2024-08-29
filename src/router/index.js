@@ -1,25 +1,42 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// router/index.js
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from "@/views/HomeView";
+import AboutView from "@/views/HomeView";
+import AuthentificationView from '../views/AuthentificationView.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'Home',
+    component: HomeView,
+    meta: { requiresAuth: true }, // Zugang nur nach Authentifizierung
   },
   {
     path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    name: 'About',
+    component: AboutView,
+    meta: { requiresAuth: true }, // Zugang nur nach Authentifizierung
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: AuthentificationView, // Login-Komponente
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+// Globale Route Guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('authToken'); // Überprüft, ob ein Authentifizierungs-Token vorhanden ist
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/login'); // Wenn nicht authentifiziert, zur Login-Seite weiterleiten
+  } else {
+    next(); // Ansonsten normal weiter
+  }
+});
+
+export default router;
